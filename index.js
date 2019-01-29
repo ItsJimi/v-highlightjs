@@ -1,14 +1,17 @@
 'use strict'
 
-import hljs from 'highlight.js'
+import hljs from 'highlight.js/lib/highlight'
 
-function highlight (el, binding) {
+async function highlight (el, binding) {
   const targets = el.querySelectorAll('code')
 
+  const language = await import(`highlight.js/lib/languages/${binding.value.language}`)
+
+  hljs.registerLanguage(binding.value.language, language.default)
+
   targets.forEach(target => {
-    if (typeof binding.value === 'string') {
-      target.textContent = binding.value
-    }
+    target.textContent = binding.value.code
+
     hljs.highlightBlock(target)
   })
 }
@@ -17,13 +20,22 @@ export default {
   install (vue) {
     vue.directive('highlightjs', {
       deep: true,
-      bind (el, binding) {
-        highlight(el, binding)
+      async bind (el, binding) {
+        try {
+          await highlight(el, binding)
+        } catch (err) {
+          console.log(err)
+        }
       },
-      componentUpdated (el, binding) {
-        if (binding.oldValue === binding.value) return
+      async componentUpdated (el, binding) {
+        if (binding.oldValue.code === binding.value.code &&
+          binding.oldValue.language === binding.value.language) return
 
-        highlight(el, binding)
+        try {
+          await highlight(el, binding)
+        } catch (err) {
+          console.log(err)
+        }
       }
     })
   }
