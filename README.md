@@ -5,7 +5,11 @@ Vue directive for highlighting code
 
 ## Install
 ```sh
-yarn add github.com/ItsJimi/v-highlightjs
+npm install --save v-highlightjs
+```
+or
+```sh
+yarn add v-highlightjs
 ```
 
 ## Use
