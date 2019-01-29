@@ -5,8 +5,6 @@ import hljs from 'highlight.js/lib/highlight'
 const languages = {}
 
 async function highlight (el, binding) {
-  const targets = el.querySelectorAll('code')
-
   if (languages[binding.value.language] === undefined) {
     const language = await import(`highlight.js/lib/languages/${binding.value.language}`)
     languages[binding.value.language] = language
@@ -14,11 +12,8 @@ async function highlight (el, binding) {
 
   hljs.registerLanguage(binding.value.language, languages[binding.value.language].default)
 
-  targets.forEach(target => {
-    target.textContent = binding.value.code
-
-    hljs.highlightBlock(target)
-  })
+  el.textContent = binding.value.code
+  hljs.highlightBlock(el)
 }
 
 export default {
