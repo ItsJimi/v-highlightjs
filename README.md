@@ -18,9 +18,7 @@ Vue.use(VHighlightJS)
 ```
 
 ```vue
-<pre v-highlightjs="code">
-  <code class="javascript"></code>
-</pre>
+<code v-highlightjs="{ language: 'json': code: code }"></code>
 ```
 
 ## Credits
